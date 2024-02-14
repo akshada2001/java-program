@@ -1,0 +1,132 @@
+mysql> create database db1;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use db1;
+Database changed
+mysql> create table emp(emp_id int,emp_name varchar(80),job_name varchar(80),salary int,primary key(emp_id));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into emp values(1,'akshada','finance',10000),(2,'sakshi','software',20000);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into emp values(3,'gita','sales',50000),(4,'sita','technical',40000);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+----------+-----------+--------+
+| emp_id | emp_name | job_name  | salary |
++--------+----------+-----------+--------+
+|      1 | akshada  | finance   |  10000 |
+|      2 | sakshi   | software  |  20000 |
+|      3 | gita     | sales     |  50000 |
+|      4 | sita     | technical |  40000 |
++--------+----------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> create table dep (dep_id int,dep_name varchar(80),location varchar(80),primary key(dep_id));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> insert into dep values(1,'science','pune'),(2,'maths','akurdi'),(3,'commerce','satara'),(4,'arts','sangli');
+Query OK, 4 rows affected (0.05 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from dep;
++--------+----------+----------+
+| dep_id | dep_name | location |
++--------+----------+----------+
+|      1 | science  | pune     |
+|      2 | maths    | akurdi   |
+|      3 | commerce | satara   |
+|      4 | arts     | sangli   |
++--------+----------+----------+
+4 rows in set (0.00 sec)
+
+
+mysql> select emp.emp_id,emp.emp_name,dep.dep_name,dep.location from emp inner join dep on emp.emp_id=dep.dep_id;
++--------+----------+----------+----------+
+| emp_id | emp_name | dep_name | location |
++--------+----------+----------+----------+
+|      1 | akshada  | science  | pune     |
+|      2 | sakshi   | maths    | akurdi   |
+|      3 | gita     | commerce | satara   |
+|      4 | sita     | arts     | sangli   |
++--------+----------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> insert into emp values(5,'sunita','software',10000);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from emp;
++--------+----------+-----------+--------+
+| emp_id | emp_name | job_name  | salary |
++--------+----------+-----------+--------+
+|      1 | akshada  | finance   |  10000 |
+|      2 | sakshi   | software  |  20000 |
+|      3 | gita     | sales     |  50000 |
+|      4 | sita     | technical |  40000 |
+|      5 | sunita   | software  |  10000 |
++--------+----------+-----------+--------+
+5 rows in set (0.00 sec)
+
+
+mysql> select emp.emp_id,emp.emp_name,dep.dep_name,dep.location from emp left outer join dep on emp.emp_id=dep.dep_id;
++--------+----------+----------+----------+
+| emp_id | emp_name | dep_name | location |
++--------+----------+----------+----------+
+|      1 | akshada  | science  | pune     |
+|      2 | sakshi   | maths    | akurdi   |
+|      3 | gita     | commerce | satara   |
+|      4 | sita     | arts     | sangli   |
+|      5 | sunita   | NULL     | NULL     |
++--------+----------+----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select emp.emp_id,emp.emp_name,dep.dep_name,dep.location from emp right outer join dep on emp.emp_id=dep.dep_id;
++--------+----------+----------+----------+
+| emp_id | emp_name | dep_name | location |
++--------+----------+----------+----------+
+|      1 | akshada  | science  | pune     |
+|      2 | sakshi   | maths    | akurdi   |
+|      3 | gita     | commerce | satara   |
+|      4 | sita     | arts     | sangli   |
++--------+----------+----------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select a.emp_name as empname1,b.emp_name as empname2 ,a.salary from emp a,emp b where a.emp_id<>b.emp_id and a.salary=b.salary order by a.salary;
+
++----------+----------+--------+
+| empname1 | empname2 | salary |
++----------+----------+--------+
+| sunita   | akshada  |  10000 |
+| akshada  | sunita   |  10000 |
++----------+----------+--------+
+2 rows in set (0.05 sec)
+
+mysql> select emp.emp_name,dep.location from emp cross join dep;
++----------+----------+
+| emp_name | location |
++----------+----------+
+| akshada  | sangli   |
+| akshada  | satara   |
+| akshada  | akurdi   |
+| akshada  | pune     |
+| sakshi   | sangli   |
+| sakshi   | satara   |
+| sakshi   | akurdi   |
+| sakshi   | pune     |
+| gita     | sangli   |
+| gita     | satara   |
+| gita     | akurdi   |
+| gita     | pune     |
+| sita     | sangli   |
+| sita     | satara   |
+| sita     | akurdi   |
+| sita     | pune     |
+| sunita   | sangli   |
+| sunita   | satara   |
+| sunita   | akurdi   |
+| sunita   | pune     |
++----------+----------+
+20 rows in set (0.00 sec)
